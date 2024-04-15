@@ -1,0 +1,14 @@
+[
+        {
+                "Name":"Export",
+                "Icon": "export.ico",
+                "Path": "native_export.py"
+        }
+		,
+		{
+                "Name":"Import",
+                "Icon": "import.ico",
+                "Path": "native_import.py"
+        }
+		
+]
