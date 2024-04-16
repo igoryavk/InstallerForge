@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "CodesysParser"
-#define MyAppVersion "0.3.1"
+#define MyAppVersion "0.3.2"
 #define MyAppPublisher "Owen"
 #define MyAppURL "https://owen.ru/"
 
@@ -41,6 +41,7 @@ Source: "C:\InstallerForge\Проекты парсера\ScriptCommands\config.json"; DestDir:
 Source: "C:\InstallerForge\Проекты парсера\ScriptCommands\export.ico"; DestDir: "C:\ProgramData\CODESYS\Script Commands"; Flags: ignoreversion
 Source: "C:\InstallerForge\Проекты парсера\ScriptCommands\import.ico"; DestDir: "C:\ProgramData\CODESYS\Script Commands"; Flags: ignoreversion
 Source: "C:\InstallerForge\Проекты парсера\ScriptCommands\native_export.py"; DestDir: "C:\ProgramData\CODESYS\Script Commands"; Flags: ignoreversion
+Source: "C:\InstallerForge\Проекты парсера\ScriptCommands\split.py"; DestDir: "C:\ProgramData\CODESYS\Script Commands"; Flags: ignoreversion
 Source: "C:\InstallerForge\Проекты парсера\ScriptCommands\native_import.py"; DestDir: "C:\ProgramData\CODESYS\Script Commands"; Flags: ignoreversion
 [Icons]
 Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"

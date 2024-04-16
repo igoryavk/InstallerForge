@@ -1,10 +1,13 @@
 from objectExplorer import ObjectExplorer
 from explorer import Explorer
+from sys import argv
+from time import sleep
+
 
 if __name__=="__main__":
     explorer=ObjectExplorer()
     showlist=[]
-    explorer.createDOM("C://parse//Device.export")
+    explorer.createDOM(f"C://parse//ExportFiles//{argv[1]}.export")
     #explorer.exploreList()
     #explorer.printNames()
     #explorer.ExplorePlcPrg()
