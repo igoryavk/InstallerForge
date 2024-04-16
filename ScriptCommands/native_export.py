@@ -40,5 +40,5 @@ for elementLevel1 in projects.primary.get_children():
         for elementLevel2 in elementLevel1.get_children():
             elementLevel2.export_native("C://parse//ExportFiles//{0}.export".format(elementLevel2.get_name()))
 
-system("python {0} {1}".format(SAVER_PATH,"Plc Logic"))
+system("python {0} \"{1}\"".format(SAVER_PATH,"Plc Logic"))
 

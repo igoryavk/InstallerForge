@@ -19,6 +19,7 @@ class ObjectExplorer(Explorer):
     def createDOM(self,path:str):
         with open(path,mode="r",encoding="utf-8") as file:
             content=file.read()
+        print("Wait please, DOM is building!!!")
         self.__DOM=BeautifulSoup(content,"xml")
         self.__root=self.__DOM.ExportFile
 
