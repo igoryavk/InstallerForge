@@ -23,19 +23,30 @@ class ObjectExplorer(Explorer):
         self.__DOM=BeautifulSoup(content,"xml")
         self.__root=self.__DOM.ExportFile
 
-    def explore(self,show:list):
-        for elementLevel1 in [item for item in self.__root.children if item.name is not None]:
-            if 1 in show:
-                print(f"{Fore.RED}Уровень 1 {elementLevel1.name}")
-                print(f"{elementLevel1.attrs}")
+    def explore(self):
+
+        mylist = self.__root.find_all("List2")
+        drop_list = []
+        #self.__dropFolder("C://parse//POUS")
+        for elementLevel1 in [item for item in mylist[0].children if item.name is not None]:
             for elementLevel2 in [item for item in elementLevel1.children if item.name is not None]:
-                if 2 in show:
-                    print(f"{Fore.GREEN}Уровень 2 {elementLevel2.name}")
-                    print(f"{elementLevel2.attrs}")
-                for elementLevel3 in [item for item in elementLevel2.children if item.name is not None]:
-                    if 3 in show:
-                        print(f"{Fore.YELLOW}Уровень 3 {elementLevel3.name}")
-                        print(f"{elementLevel3.attrs}")
+                if elementLevel2["Name"] == "MetaObject":
+                    for elementLevel3 in [item for item in elementLevel2.children if item.name is not None]:
+                        if elementLevel3["Name"] == "TypeGuid":
+                            if elementLevel3.text == "f8a58466-d7f6-439f-bbb8-d4600e41d099":
+                                pou = elementLevel3.parent.parent
+                                pou_name = elementLevel3.parent.find_all("Single", {"Name": "Name"})[0].text
+                                print("____________________")
+                                for item in [item for item in pou.children if item.name is not None]:
+                                    if item.name=="Array":
+                                        print(type(item))
+                                        for item2 in [item for item in item.children if item.name is not None]:
+                                            print(f"{item2.attrs}")
+
+                                # with open(f"C://parse//POUS//{pou_name}.xml", mode="w", encoding="utf-8") as file:
+                                #     file.write(str(pou))
+                                #     file.close()
+                                # drop_list.append(pou)
 
     def exploreList(self):
         mylist = self.__root.find_all("List2")
@@ -118,22 +129,35 @@ class ObjectExplorer(Explorer):
         mkdir(path)
     #Метод извлечения POU объектов из экпортного файла и сохранения clear-файла(файл содержащий stub-болванки для POU)
     #Данный файл служит для восстановления экспортного файла
-    def cutPous(self):
+    def cutPous(self,pou_folder):
         mylist=self.__root.find_all("List2")
         drop_list=[]
-        self.__dropFolder("C://parse//POUS")
+        self.__dropFolder(pou_folder)
         for elementLevel1 in [item for item in mylist[0].children if item.name is not None]:
             for elementLevel2 in [item for item in elementLevel1.children if item.name is not None]:
                 if elementLevel2["Name"]=="MetaObject":
                     for elementLevel3 in [item for item in elementLevel2.children if item.name is not None]:
                         if elementLevel3["Name"]=="TypeGuid":
+                            #Если элемент является POU
                             if elementLevel3.text=="6f9dac99-8de1-4efc-8465-68ac443b7d08":
                                 pou=elementLevel3.parent.parent
                                 pou_name=elementLevel3.parent.find_all("Single",{"Name":"Name"})[0].text
-                                with open(f"C://parse//POUS//{pou_name}.xml",mode="w",encoding="utf-8") as file:
+                                with open(f"{pou_folder}//{pou_name}.xml",mode="w",encoding="utf-8") as file:
                                     file.write(str(pou))
                                     file.close()
                                 drop_list.append(pou)
+                            #Если элемент является методом
+                            if elementLevel3.text=="f8a58466-d7f6-439f-bbb8-d4600e41d099":
+                                method=elementLevel3.parent.parent
+                                method_name=elementLevel3.parent.find_all("Single",{"Name":"Name"})[0].text
+                                for element in [item for item in method.children if item.name is not None]:
+                                    if element.name=="Array":
+                                        path_to_method=[item for item in element.children if item.name is not None]
+                                pou_name=path_to_method[-1].text
+                                with open(f"{pou_folder}//{pou_name}.{method_name}.xml",mode="w",encoding="utf-8") as file:
+                                    file.write(str(method))
+                                    file.close()
+                                drop_list.append(method)
         for pou in drop_list:
             stub=self.__DOM.new_tag("Stub")
             stub['name']=pou.find_all("Single",{"Name":"Name"})[0].text
@@ -170,28 +194,29 @@ class ObjectExplorer(Explorer):
             content=file.read()
             file.close()
         return BeautifulSoup(content,"xml")
-    def saveTexts(self):
-        if exists(f"C://parse//sources"):
-            rmtree("C://parse//sources")
-        mkdir("C://parse//sources")
-        for filename in listdir("C://parse//POUS"):
+    def saveTexts(self,sources_folder,pou_folder):
+        if exists(sources_folder):
+            rmtree(sources_folder)
+        mkdir(sources_folder)
+
+        for filename in listdir(pou_folder):
             self._PouName=filename
-            self.createPouDom(f"C://parse//POUS//{filename}")
-            self.catchPouText()
+            self.createPouDom(f"{pou_folder}//{filename}")
+            self.catchPouText(sources_folder)
 
     def createPouDom(self,path:str):
         with open(path,mode="r",encoding="utf8") as file:
             content=file.read()
             file.close()
         self.__rootPouDom=BeautifulSoup(content,"xml")
-    def catchPouText(self):
+    def catchPouText(self,sources_folder):
         text=""
         textDocuments=self.__rootPouDom.find_all("Single",{"Name":"TextDocument"})
         textDocuments.reverse()
         for textDocument in textDocuments:
             text=text+self.findPouText(textDocument)
 
-        with open(f"C://parse//sources//{self._PouName}", "w") as file:
+        with open(f"{sources_folder}//{self._PouName}", "w") as file:
             file.write(text)
             file.close()
     def findPouText(self,rootElement:bs4.Tag):

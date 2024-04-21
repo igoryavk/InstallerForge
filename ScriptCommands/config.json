@@ -10,10 +10,5 @@
                 "Icon": "import.ico",
                 "Path": "native_import.py"
         }
-		,
-		{
-                "Name":"Split",
-                "Icon": "import.ico",
-                "Path": "split.py"
-        }
+		
 ]

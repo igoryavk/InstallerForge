@@ -1,10 +1,12 @@
 # import scriptengine
 # scriptengine.ScriptProject.export_native()
 from os import system
-
+from os import popen
+from os import listdir
 PATH="C://parse//"
 IMPORTER_PATH="C://parse//exec//importer.py"
 IMPORT_PATH="C://parse//Device.export"
+
 
 
 class MyNativeImportHandler(NativeImportHandler):
@@ -23,15 +25,17 @@ class MyNativeImportHandler(NativeImportHandler):
     def skipped(self, name):
         print("Object is skipping")
 
-
-
 #print(projects.primary.active_application.get_name())
 #projects.primary.export_native(objects=objects,destination=PATH,recursive=True,one_file_per_subtree=True)
 #system("python {0}".format(IMPORTER_PATH))
 
-projects.primary.close()
-new_project=projects.create("NewProject")
-native_import_handler=MyNativeImportHandler()
 
-new_project.import_native(filename=IMPORT_PATH)
+
+out=popen("C://parse//exec//Selector.exe {0}".format(listdir("C://parse"))).read()
+print(out)
+# projects.primary.close()
+# new_project=projects.create("NewProject")
+# native_import_handler=MyNativeImportHandler()
+#
+# new_project.import_native(filename=IMPORT_PATH)
 
