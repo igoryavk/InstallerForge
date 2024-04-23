@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "CodesysParser"
-#define MyAppVersion "0.3.2"
+#define MyAppVersion "0.3.4"
 #define MyAppPublisher "Owen"
 #define MyAppURL "https://owen.ru/"
 
@@ -37,6 +37,8 @@ Source: "C:\InstallerForge\Проекты парсера\ObjectExplorer\importer.py"; DestDir:
 Source: "C:\InstallerForge\Проекты парсера\ObjectExplorer\objectExplorer.py"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\InstallerForge\Проекты парсера\ObjectExplorer\saver.py"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\InstallerForge\Проекты парсера\ObjectExplorer\Selector.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\InstallerForge\Проекты парсера\ObjectExplorer\Import_ProjectSelector.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\InstallerForge\Проекты парсера\ObjectExplorer\Import_DeviceSelector.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\InstallerForge\Проекты парсера\ScriptCommands\config.json"; DestDir: "C:\ProgramData\CODESYS\Script Commands"; Flags: ignoreversion
 Source: "C:\InstallerForge\Проекты парсера\ScriptCommands\export.ico"; DestDir: "C:\ProgramData\CODESYS\Script Commands"; Flags: ignoreversion
 Source: "C:\InstallerForge\Проекты парсера\ScriptCommands\import.ico"; DestDir: "C:\ProgramData\CODESYS\Script Commands"; Flags: ignoreversion
